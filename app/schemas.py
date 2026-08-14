@@ -11,6 +11,13 @@ class UserResponse(BaseModel):
     email:EmailStr
     id:int
 
+class UserLogin(BaseModel):
+    user_name:Optional[str]=None
+    email:Optional[str]=None
+    password:str
+
+
+
 class JobApplicationCreate(BaseModel):
     company:str
     role:str
