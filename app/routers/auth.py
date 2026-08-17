@@ -47,22 +47,31 @@ def register_user(user:UserCreate,db:Session=Depends(get_db)):
     db.refresh(db_user)
     return db_user
 
-@router.post("/login")
+@router.post("/login",response_model=UserResponse)
 def user_login(user:UserLogin,db:Session=Depends(get_db)):
-    mana_user_name=db.query(User).filter(User.user_name==user.user_name).fisrt()
-    mana_user_email=db.query(User).filter(User.email==user.email).fisrt()
+    if user.user_name:
+        mana_user_name=db.query(User).filter(User.user_name==user.user_name).first()
 
-    if not mana_user_name and mana_user_email:
+    elif user.email:
+        mana_user_email=db.query(User).filter(User.email==user.email).first()
+
+    else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid Username or Email"
+            detail="invalid user name or email"
         )
     mana_user_password=verify_password(user.password,User.hashed_password)
 
-    if not mana_user_password:
+    if not mana_user_name or not mana_user_email or not mana_user_password:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect password"
+            detail="Invalid Username or Password"
         )
 
+    
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return user
     
