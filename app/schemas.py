@@ -51,3 +51,8 @@ class JobApplicationResponse(BaseModel):
     job_url: Optional[str] = None
     salary: Optional[int] = None
     notes: Optional[str] = None
+
+class TokenResponse(BaseModel):
+    access_token:str
+    token_type:str
+

@@ -2,11 +2,12 @@ from fastapi import APIRouter,HTTPException,status,Depends
 from app.schemas import UserCreate,JobApplicationCreate,JobApplicationResponse
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models import JobApplication
+from app.models import JobApplication,User
+from app.routers.auth import get_current_user
 router=APIRouter()
 
 @router.post("/applications",response_model=JobApplicationResponse)
-def create_application(application:JobApplicationCreate,db:Session=Depends(get_db)):
+def create_application(application:JobApplicationCreate,db:Session=Depends(get_db),current_user:User=Depends(get_current_user)):
     db_application = JobApplication(
     company=application.company,
     role=application.role,
@@ -17,7 +18,7 @@ def create_application(application:JobApplicationCreate,db:Session=Depends(get_d
     job_url=application.job_url,
     salary=application.salary,
     notes=application.notes,
-    user_id=current_user.id
+    
 )
     db.add(db_application)
     db.commit()
