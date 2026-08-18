@@ -1,5 +1,5 @@
 from fastapi import APIRouter,HTTPException,status,Depends
-from app.schemas import UserCreate,JobApplicationCreate,JobApplicationResponse
+from app.schemas import UserCreate,JobApplicationCreate,JobApplicationResponse,JobApplicationUpdate
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import JobApplication,User
@@ -49,3 +49,23 @@ def get_applications_by_id(id:int,db:Session=Depends(get_db),current_user:User=D
         )
 
     return db_application
+
+@router.patch("/applications/{id}",response_model=JobApplicationResponse,status_code=status.HTTP_200_OK)
+def update_job_appl(id:int,update_data:JobApplicationUpdate,db:Session=Depends(get_db),current_user:User=Depends(get_current_user)):
+    db_application=db.query(JobApplication).filter(JobApplication.id==id,JobApplication.user_id==current_user.id).first()
+
+    
+    if not db_application:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data Not Found"
+        )
+
+    update_fields=update_data.model_dump(exclude_unset=True)
+    for key,pair in update_fields.items():
+        setattr(db_application,key,pair)
+
+    db.commit()
+    db.refresh(db_application)
+    return db_application
+    
