@@ -81,6 +81,4 @@ def delete_application(id:int,db:Session=Depends(get_db),current_user:User=Depen
 
     db.delete(db_application)
     db.commit()
-    return{
-        "message":"Application Deleted Successfully "
-    }
+    
