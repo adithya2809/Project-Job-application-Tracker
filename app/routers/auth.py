@@ -16,10 +16,10 @@ SECRET_KEY="7f3c9a1e6b8d4f2a9c5e7b1d3f6a8c0e2b4d6f9a1c3e5b7d9f2a4c6e8b0d1f3"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-from fastapi.security import OAuth2PasswordBearer
-outh2_scheme=OAuth2PasswordBearer(tokenUrl="/auth/login")
-
-def get_current_user(token:str=Depends(outh2_scheme),db:Session=Depends(get_db)):
+from fastapi.security import HTTPBearer,HTTPAuthorizationCredentials
+security=HTTPBearer()
+def get_current_user(credentials:HTTPAuthorizationCredentials=Depends(security),db:Session=Depends(get_db)):
+    token=credentials.credentials
     try:
         payload=jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
 
