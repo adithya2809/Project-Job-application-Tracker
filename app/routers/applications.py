@@ -68,4 +68,19 @@ def update_job_appl(id:int,update_data:JobApplicationUpdate,db:Session=Depends(g
     db.commit()
     db.refresh(db_application)
     return db_application
-    
+
+@router.delete("/applications/{id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_application(id:int,db:Session=Depends(get_db),current_user:User=Depends(get_current_user)):
+    db_application=db.query(JobApplication).filter(JobApplication.id==id,JobApplication.user_id==current_user.id).first()
+
+    if not db_application:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data Not Found"
+        )
+
+    db.delete(db_application)
+    db.commit()
+    return{
+        "message":"Application Deleted Successfully "
+    }
