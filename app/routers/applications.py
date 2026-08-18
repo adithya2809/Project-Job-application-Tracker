@@ -38,3 +38,14 @@ def get_all_applications(db:Session=Depends(get_db),current_user:User=Depends(ge
 
     return db_application
 
+@router.get("/applications/{id}",response_model=JobApplicationResponse,status_code=status.HTTP_200_OK)
+def get_applications_by_id(id:int,db:Session=Depends(get_db),current_user:User=Depends(get_current_user)):
+    db_application=db.query(JobApplication).filter(JobApplication.id==id,JobApplication.user_id==current_user.id).first()
+
+    if db_application is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data Not Found"
+        )
+
+    return db_application
