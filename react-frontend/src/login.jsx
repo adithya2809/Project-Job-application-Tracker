@@ -3,7 +3,10 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+
+import {useNavigate} from "react-router-dom";
 function Login(){
+    const navigate=useNavigate();
     const [formData,setFormData]=useState({
         "user_name":"",
         "email":"",
@@ -12,7 +15,6 @@ function Login(){
     const [message,setMessage]=useState("");
     const [loginError,setLoginError]=useState("");
     const [loginLoading,setLoginLoading]=useState(false);
-
 
     
     function handleChange(event){
@@ -43,6 +45,7 @@ function Login(){
             if (response.ok){
                 localStorage.setItem("token",data.access_token);
                 setMessage("Login Successful")
+                navigate("/dashboard")
             }
             else{
                 setLoginError(data.detail)
