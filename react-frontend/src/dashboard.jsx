@@ -23,6 +23,18 @@ const [editFormData,setEditFormData]=useState({
     notes: ""
 });
 
+const [formData,setFormData]=useState({
+    company: "",
+    role: "",
+    location: "",
+    job_type: "",
+    status: "",
+    application_date: "",
+    job_url: "",
+    salary: "",
+    notes: ""
+});
+
 useEffect(()=>{
     async function getApplications(){
         try{
@@ -117,6 +129,55 @@ async function handleSave(id){
     }
 }
  
+function handleCreateChange(event){
+    const {name,value}=event.target;
+    setFormData({
+        ...formData,
+        [name]:value
+});
+}
+
+async function handleCreateSubmit(event) {
+    event.preventDefault();
+    setLoading(true)
+    try{
+    const token = localStorage.getItem("token");
+    const response=await fetch("http://localhost:8000/applications",{
+        method:"POST",
+        headers:{ "content-type":"application/json",
+            Authorization:`Bearer ${token}`},
+        body:JSON.stringify(formData)
+    })
+
+    const data =await response.json();
+
+    if (response.ok){
+        setApplications([...applications,data]);
+
+        setFormData({
+            company: "",
+                role: "",
+                location: "",
+                job_type: "",
+                status: "",
+                application_date: "",
+                job_url: "",
+                salary: "",
+                notes: ""
+        });
+    }
+    else{
+        setError(data.detail)
+    }
+    }
+    catch(error){
+        setError("Unable to create Application")
+    }
+    finally{
+        setLoading(false)
+    }
+   }
+
 return(
     <>
     <h1>Dashboard</h1>
@@ -156,7 +217,7 @@ return(
             value={editFormData.status} 
             onChange={handleChange}/>
             
-            <input type="text" 
+            <input type="date" 
             name="application_date"
             value={editFormData.application_date} 
             onChange={handleChange}/>
@@ -201,8 +262,79 @@ return(
     )}
     </div>
 )} 
-    
 
+ 
+<form onSubmit={handleCreateSubmit}>
+    <input type="text" 
+    name="company" 
+    placeholder="company" 
+    value={formData.company} 
+    onChange={handleCreateChange}/>
+
+     <input
+        type="text"
+        name="role"
+        placeholder="Role"
+        value={formData.role}
+        onChange={handleCreateChange}
+    />
+
+    <input
+        type="text"
+        name="location"
+        placeholder="Location"
+        value={formData.location}
+        onChange={handleCreateChange}
+    />
+
+    <input
+    type="text"
+    name="job_type"
+    placeholder="Job Type"
+    value={formData.job_type}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="text"
+    name="status"
+    placeholder="Status"
+    value={formData.status}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="date"
+    name="application_date"
+    value={formData.application_date}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="text"
+    name="job_url"
+    placeholder="Job URL"
+    value={formData.job_url}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="number"
+    name="salary"
+    placeholder="Salary"
+    value={formData.salary}
+    onChange={handleCreateChange}
+/>
+
+<textarea
+    name="notes"
+    placeholder="Notes"
+    value={formData.notes}
+    onChange={handleCreateChange}
+/>
+
+    <button type="submit">Add Application</button>
+</form>
     
 
     </>
