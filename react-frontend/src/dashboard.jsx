@@ -10,8 +10,9 @@ const [loading,setLoading]=useState(true);
 const [error,setError]=useState("");
 
 const [editingId,setEditingId]=useState(null);
-
+const [saveLoading,setSaveLoading]=useState(false);
 const [createloading,setCreateLoading]=useState(false);
+const [deleteLoading,setDeleteLoading]=useState(false);
 
 const [editFormData,setEditFormData]=useState({
     company: "",
@@ -65,6 +66,7 @@ useEffect(()=>{
 
 
     async function handleDelete(id){
+        setDeleteLoading(true);
         try{
             const token=localStorage.getItem("token");
             const response=await fetch(`http://localhost:8000/applications/${id}`,{
@@ -80,6 +82,9 @@ useEffect(()=>{
     
         catch (error){
             setError("Failed to delete the Application");
+        }
+        finally{
+            setDeleteLoading(false);
         }
 
         
@@ -110,6 +115,7 @@ useEffect(()=>{
 }
 
 async function handleSave(id){
+    setSaveLoading(true);
     try{
     const token=localStorage.getItem("token");
     const response=await fetch(`http://localhost:8000/applications/${id}`,{
@@ -128,6 +134,9 @@ async function handleSave(id){
         }
     catch(error){
         setError("Unable to Update application")
+    }
+    finally{
+        setSaveLoading(false);
     }
 }
  
@@ -240,7 +249,7 @@ return(
             value={editFormData.notes} 
             onChange={handleChange}/>
             
-            <button onClick={()=>handleSave(application.id)}>Save</button>
+            <button onClick={()=>handleSave(application.id)} disabled={saveLoading}>{saveLoading?"saving...":"Save"}</button>
             
             <button onClick={()=>setEditingId(null)}>Cancel</button>
             </>
@@ -258,7 +267,7 @@ return(
             <p>{application.notes}</p>
 
             <button onClick={()=>{handleEdit(application)}}>Edit</button>
-            <button onClick={()=>{handleDelete(application.id)}}>Delete</button>
+            <button onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting":"Delete"}</button>
         </>
         
     )}
