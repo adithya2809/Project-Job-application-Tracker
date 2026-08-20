@@ -11,6 +11,8 @@ const [error,setError]=useState("");
 
 const [editingId,setEditingId]=useState(null);
 
+const [createloading,setCreateLoading]=useState(false);
+
 const [editFormData,setEditFormData]=useState({
     company: "",
     role: "",
@@ -139,7 +141,7 @@ function handleCreateChange(event){
 
 async function handleCreateSubmit(event) {
     event.preventDefault();
-    setLoading(true)
+    setCreateLoading(true);
     try{
     const token = localStorage.getItem("token");
     const response=await fetch("http://localhost:8000/applications",{
@@ -174,7 +176,7 @@ async function handleCreateSubmit(event) {
         setError("Unable to create Application")
     }
     finally{
-        setLoading(false)
+        setCreateLoading(false)
     }
    }
 
@@ -333,7 +335,7 @@ return(
     onChange={handleCreateChange}
 />
 
-    <button type="submit">Add Application</button>
+    <button type="submit" disabled={createloading}>{createloading?"Adding...":"Add Application"}</button>
 </form>
     
 
