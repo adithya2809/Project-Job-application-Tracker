@@ -11,7 +11,7 @@ const [error,setError]=useState("");
 
 const [editingId,setEditingId]=useState(null);
 
-const [editFormData,seteditFormData]=useState({
+const [editFormData,setEditFormData]=useState({
     company: "",
     role: "",
     location: "",
@@ -73,15 +73,50 @@ useEffect(()=>{
     
     function handleChange(event){
         const {name,value}=event.target;
-        seteditFormData({
+        setEditFormData({
             ...editFormData,
             [name]:value
         }
         );
     }
     function handleEdit(application){
-        const 
+        setEditFormData({
+        company: application.company,
+        role: application.role,
+        location: application.location,
+        job_type: application.job_type,
+        status: application.status,
+        application_date: application.application_date,
+        job_url: application.job_url,
+        salary: application.salary,
+        notes: application.notes
+    });
+
+    setEditingId(application.id);
+}
+
+async function handleSave(id){
+    try{
+    const token=localStorage.getItem("token");
+    const response=await fetch(`http://localhost:8000/applications/${id}`,{
+        method:"PATCH",
+        headers:{ "content-type":"application/json",
+            Authorization:`Bearer ${token}`},
+        body:JSON.stringify(editFormData)
+    });
+    if(!response.ok){
+        throw new Error("Failed to update application")
     }
+    const updatedApplication=await response.json();
+    setApplications(applications.map((application)=>application.id===id?updatedApplication:application
+    ));
+    setEditingId(null)
+        }
+    catch(error){
+        setError("Unable to Update application")
+    }
+}
+ 
 return(
     <>
     <h1>Dashboard</h1>
@@ -91,7 +126,64 @@ return(
 
     {applications.map((application)=>
         <div key={application.id}>
-            <h2>{application.company}</h2>
+            
+            
+
+            {editingId===application.id ?(
+            <>
+            <input type="text" 
+            name="company"
+            value={editFormData.company} 
+            onChange={handleChange}/>
+
+            <input type="text" 
+            name="role"
+            value={editFormData.role} 
+            onChange={handleChange}/>
+            
+            <input type="text" 
+            name="location"
+            value={editFormData.location} 
+            onChange={handleChange}/>
+            
+            <input type="text" 
+            name="job_type"
+            value={editFormData.job_type} 
+            onChange={handleChange}/>
+            
+            <input type="text" 
+            name="status"
+            value={editFormData.status} 
+            onChange={handleChange}/>
+            
+            <input type="text" 
+            name="application_date"
+            value={editFormData.application_date} 
+            onChange={handleChange}/>
+
+            <input type="text" 
+            name="job_url"
+            value={editFormData.job_url} 
+            onChange={handleChange}/>
+            
+            
+            <input type="text" 
+            name="salary"
+            value={editFormData.salary} 
+            onChange={handleChange}/>
+            
+            <input type="text" 
+            name="notes"
+            value={editFormData.notes} 
+            onChange={handleChange}/>
+            
+            <button onClick={()=>handleSave(application.id)}>Save</button>
+            
+            <button onClick={()=>setEditingId(null)}>Cancel</button>
+            </>
+    ):(
+        <>
+        <h2>{application.company}</h2>
 
             <p>{application.role}</p>
             <p>{application.location}</p>
@@ -101,16 +193,17 @@ return(
             <p>{application.job_url}</p>
             <p>{application.salary}</p>
             <p>{application.notes}</p>
-            {editingId==application.id ? <input type="text" 
-            name="company"
-            value={editFormData.company} 
-            onChange={handleChange}></input>
-            :application.company}
-            
-            <button onClick={()=>{setEditingId(application.id)}}>Edit</button>
+
+            <button onClick={()=>{handleEdit(application)}}>Edit</button>
             <button onClick={()=>{handleDelete(application.id)}}>Delete</button>
-        </div>
+        </>
+        
     )}
+    </div>
+)} 
+    
+
+    
 
     </>
 );
