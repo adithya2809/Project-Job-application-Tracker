@@ -41,6 +41,9 @@ const [formData,setFormData]=useState({
 const [searchTerm,setSearchTerm]=useState("");
 
 const [sortOrder,setSortOrder]=useState("newest");
+
+const [statusFilter,setStatusFilter]=useState("all");
+
 useEffect(()=>{
     async function getApplications(){
         try{
@@ -192,17 +195,23 @@ async function handleCreateSubmit(event) {
     }
    }
 
-   const filteredApplications=applications.filter((application)=>
-    application.company.toLowerCase().includes(searchTerm.toLowerCase())||
-   application.role.toLowerCase().includes(searchTerm.toLowerCase())
-   );
-
+   const filteredApplications=applications.filter((application)=>{
+   const matchesSearch=application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        application.role.toLowerCase().includes(searchTerm.toLowerCase());
+    
+        const matchesStatus=statusFilter==="all"|| application.status===statusFilter;
+        return matchesSearch && matchesStatus;
+   });
    const sortedApplications=[...filteredApplications].sort((a,b)=>{
     if (sortOrder === "newest"){
         return new Date(b.application_date)- new Date(a.application_date);
     }
     return new Date(a.application_date)-new Date(b.application_date);
    });
+
+   const statuses=[
+    ...new Set(applications.map((application)=>application.status))
+   ];
 return(
     <>
     <h1>Dashboard</h1>
@@ -220,6 +229,16 @@ return(
     <select value={sortOrder} onChange={(event)=>setSortOrder(event.target.value)}>
         <option value="newest">Newest-Oldest</option>
         <option value="oldest">Oldest-Newest</option>
+    </select>
+
+    <select value={statusFilter} onChange={(event)=> setStatusFilter(event.target.value)}>
+        <option value="all">All Statuses</option>
+
+        {statuses.map((status)=>(
+            <option key={status} value={status}>
+                {status}
+            </option>
+        ))}
     </select>
 <div className="applications-container">
     {sortedApplications.map((application)=>
