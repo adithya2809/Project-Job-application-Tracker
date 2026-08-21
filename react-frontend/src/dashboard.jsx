@@ -38,6 +38,9 @@ const [formData,setFormData]=useState({
     notes: ""
 });
 
+const [searchTerm,setSearchTerm]=useState("");
+
+const [sortOrder,setSortOrder]=useState("newest");
 useEffect(()=>{
     async function getApplications(){
         try{
@@ -189,6 +192,17 @@ async function handleCreateSubmit(event) {
     }
    }
 
+   const filteredApplications=applications.filter((application)=>
+    application.company.toLowerCase().includes(searchTerm.toLowerCase())||
+   application.role.toLowerCase().includes(searchTerm.toLowerCase())
+   );
+
+   const sortedApplications=[...filteredApplications].sort((a,b)=>{
+    if (sortOrder === "newest"){
+        return new Date(b.application_date)- new Date(a.application_date);
+    }
+    return new Date(a.application_date)-new Date(b.application_date);
+   });
 return(
     <>
     <h1>Dashboard</h1>
@@ -196,8 +210,20 @@ return(
     {loading && <p>Loading Applications...</p>}
     {error && <p>{error}</p>}
 
-    {applications.map((application)=>
-        <div key={application.id}>
+    <div className="dashboard-controls">
+        <input type="text" 
+        placeholder="search by company or name.." 
+        value={searchTerm} 
+        onChange={(event)=>setSearchTerm(event.target.value)} />
+
+    </div>
+    <select value={sortOrder} onChange={(event)=>setSortOrder(event.target.value)}>
+        <option value="newest">Newest-Oldest</option>
+        <option value="oldest">Oldest-Newest</option>
+    </select>
+<div className="applications-container">
+    {sortedApplications.map((application)=>
+        <div className="application-card" key={application.id}>
             
             
 
@@ -253,27 +279,31 @@ return(
             
             <button onClick={()=>setEditingId(null)}>Cancel</button>
             </>
-    ):(
-        <>
-        <h2>{application.company}</h2>
+            ):(
+            <>
+                <div className="application-header">
+            <h2>{application.company}</h2>
+            <span>{application.status}</span>
+                </div>
 
-            <p>{application.role}</p>
+            <h3>{application.role}</h3>
             <p>{application.location}</p>
             <p>{application.job_type}</p>
-            <p>{application.status}</p>
             <p>{application.application_date}</p>
             <p>{application.job_url}</p>
             <p>{application.salary}</p>
             <p>{application.notes}</p>
 
+            <div className="application-actions">
             <button onClick={()=>{handleEdit(application)}}>Edit</button>
-            <button onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting":"Delete"}</button>
-        </>
-        
+            <button onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting...":"Delete"}</button>
+            </div>
+            
+            </>
     )}
     </div>
 )} 
-
+</div>
  
 <form onSubmit={handleCreateSubmit}>
     <input type="text" 
@@ -346,8 +376,6 @@ return(
 
     <button type="submit" disabled={createloading}>{createloading?"Adding...":"Add Application"}</button>
 </form>
-    
-
     </>
 );
 }
