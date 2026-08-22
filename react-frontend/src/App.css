@@ -203,8 +203,10 @@
     align-items: center;
 }
 
+
 .application-header h2 {
     margin: 0;
+    color: black;
 }
 
 .application-card h3 {

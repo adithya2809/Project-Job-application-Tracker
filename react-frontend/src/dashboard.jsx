@@ -212,6 +212,11 @@ async function handleCreateSubmit(event) {
    const statuses=[
     ...new Set(applications.map((application)=>application.status))
    ];
+
+   function handleLogout(){
+    localStorage.removeItem("token");
+    window.location.href="/";
+   }
 return(
     <>
     <h1>Dashboard</h1>
@@ -395,6 +400,8 @@ return(
 
     <button type="submit" disabled={createloading}>{createloading?"Adding...":"Add Application"}</button>
 </form>
+
+<button onClick={handleLogout}>Logout</button>
     </>
 );
 }

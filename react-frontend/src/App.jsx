@@ -7,6 +7,7 @@ import './App.css'
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Login from './login';
 import Dashboard from './dashboard';
+import ProtectedRoute from './protectedroute'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,8 +16,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+
           <Route path='/' element={<Login />}/>
-          <Route path='/dashboard' element={<Dashboard />}/>
+          <Route path='/dashboard' element={
+            <ProtectedRoute>
+            <Dashboard />
+            </ProtectedRoute>}/>
         </Routes>
       </BrowserRouter>
     </>
