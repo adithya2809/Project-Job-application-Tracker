@@ -44,6 +44,7 @@ const [sortOrder,setSortOrder]=useState("newest");
 
 const [statusFilter,setStatusFilter]=useState("all");
 
+const [showCreateForm,setShowCreateForm]=useState(false);
 useEffect(()=>{
     async function getApplications(){
         try{
@@ -217,14 +218,97 @@ async function handleCreateSubmit(event) {
     localStorage.removeItem("token");
     window.location.href="/";
    }
+
+   function handleCreate(){
+    setShowCreateForm(true);
+   }
 return(
     <>
     <header className="navbar">
     <h1>Job Tracker</h1>
 
+    <button onClick={handleCreate}>Create New</button>
     <button onClick={handleLogout}>Logout</button>
 
     </header>
+
+    {showCreateForm && (
+        <div className="create-application-form">
+            {
+                <form onSubmit={handleCreateSubmit}>
+    <input type="text" 
+    name="company" 
+    placeholder="company" 
+    value={formData.company} 
+    onChange={handleCreateChange}/>
+
+     <input
+        type="text"
+        name="role"
+        placeholder="Role"
+        value={formData.role}
+        onChange={handleCreateChange}
+    />
+
+    <input
+        type="text"
+        name="location"
+        placeholder="Location"
+        value={formData.location}
+        onChange={handleCreateChange}
+    />
+
+    <input
+    type="text"
+    name="job_type"
+    placeholder="Job Type"
+    value={formData.job_type}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="text"
+    name="status"
+    placeholder="Status"
+    value={formData.status}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="date"
+    name="application_date"
+    value={formData.application_date}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="text"
+    name="job_url"
+    placeholder="Job URL"
+    value={formData.job_url}
+    onChange={handleCreateChange}
+/>
+
+<input
+    type="number"
+    name="salary"
+    placeholder="Salary"
+    value={formData.salary}
+    onChange={handleCreateChange}
+/>
+
+<textarea
+    name="notes"
+    placeholder="Notes"
+    value={formData.notes}
+    onChange={handleCreateChange}
+/>
+    <button type="button" onClick={()=>setShowCreateForm(false)}>Cancel</button>
+    <button type="submit" disabled={createloading}>{createloading?"Adding...":"Add Application"}</button>
+</form>
+            }
+        </div>
+    )}
     {loading && <p>Loading Applications...</p>}
     {error && <p>{error}</p>}
 
@@ -233,7 +317,6 @@ return(
         placeholder="search by company or role.." 
         value={searchTerm} 
         onChange={(event)=>setSearchTerm(event.target.value)} />
-    <div className="select-operations">
     <select value={sortOrder} onChange={(event)=>setSortOrder(event.target.value)}>
         <option value="newest">Newest-Oldest</option>
         <option value="oldest">Oldest-Newest</option>
@@ -249,7 +332,7 @@ return(
         ))}
     </select>
     </div>
-    </div>
+
 <div className="applications-container">
     {sortedApplications.map((application)=>
         <div className="application-card" key={application.id}>
@@ -338,77 +421,7 @@ return(
 )} 
 </div>
  
-<form onSubmit={handleCreateSubmit}>
-    <input type="text" 
-    name="company" 
-    placeholder="company" 
-    value={formData.company} 
-    onChange={handleCreateChange}/>
 
-     <input
-        type="text"
-        name="role"
-        placeholder="Role"
-        value={formData.role}
-        onChange={handleCreateChange}
-    />
-
-    <input
-        type="text"
-        name="location"
-        placeholder="Location"
-        value={formData.location}
-        onChange={handleCreateChange}
-    />
-
-    <input
-    type="text"
-    name="job_type"
-    placeholder="Job Type"
-    value={formData.job_type}
-    onChange={handleCreateChange}
-/>
-
-<input
-    type="text"
-    name="status"
-    placeholder="Status"
-    value={formData.status}
-    onChange={handleCreateChange}
-/>
-
-<input
-    type="date"
-    name="application_date"
-    value={formData.application_date}
-    onChange={handleCreateChange}
-/>
-
-<input
-    type="text"
-    name="job_url"
-    placeholder="Job URL"
-    value={formData.job_url}
-    onChange={handleCreateChange}
-/>
-
-<input
-    type="number"
-    name="salary"
-    placeholder="Salary"
-    value={formData.salary}
-    onChange={handleCreateChange}
-/>
-
-<textarea
-    name="notes"
-    placeholder="Notes"
-    value={formData.notes}
-    onChange={handleCreateChange}
-/>
-
-    <button type="submit" disabled={createloading}>{createloading?"Adding...":"Add Application"}</button>
-</form>
 
     </>
 );
