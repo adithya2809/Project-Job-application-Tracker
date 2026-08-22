@@ -310,19 +310,23 @@ return(
             </>
             ):(
             <>
-                <div className="application-header">
+            <div className="application-header">
+                <div>
             <h2>{application.company}</h2>
-            <span>{application.status}</span>
+            <h3>{application.role}</h3>
                 </div>
 
-            <h3>{application.role}</h3>
-            <p>{application.location}</p>
-            <p>{application.job_type}</p>
-            <p>{application.application_date}</p>
-            <p>{application.job_url}</p>
-            <p>{application.salary}</p>
-            <p>{application.notes}</p>
-
+            <span className="status">{application.status}</span>
+            </div>
+            
+            <div className="application-details">
+            <p><strong>{application.location}</strong></p>
+            <p><strong>{application.job_type}</strong></p>
+            <p><strong>{application.application_date}</strong></p>
+            <p><strong>{application.job_url}</strong></p>
+            <p><strong>{application.salary}</strong></p>
+            <p><strong>{application.notes}</strong></p>
+                </div>
             <div className="application-actions">
             <button onClick={()=>{handleEdit(application)}}>Edit</button>
             <button onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting...":"Delete"}</button>
