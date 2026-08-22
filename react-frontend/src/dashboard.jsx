@@ -171,6 +171,7 @@ async function handleCreateSubmit(event) {
 
     if (response.ok){
         setApplications([...applications,data]);
+        setShowCreateForm(false);
 
         setFormData({
             company: "",
