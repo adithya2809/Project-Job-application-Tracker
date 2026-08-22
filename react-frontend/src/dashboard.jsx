@@ -219,18 +219,21 @@ async function handleCreateSubmit(event) {
    }
 return(
     <>
-    <h1>Dashboard</h1>
+    <header className="navbar">
+    <h1>Job Tracker</h1>
 
+    <button onClick={handleLogout}>Logout</button>
+
+    </header>
     {loading && <p>Loading Applications...</p>}
     {error && <p>{error}</p>}
 
     <div className="dashboard-controls">
         <input type="text" 
-        placeholder="search by company or name.." 
+        placeholder="search by company or role.." 
         value={searchTerm} 
         onChange={(event)=>setSearchTerm(event.target.value)} />
-
-    </div>
+    <div className="select-operations">
     <select value={sortOrder} onChange={(event)=>setSortOrder(event.target.value)}>
         <option value="newest">Newest-Oldest</option>
         <option value="oldest">Oldest-Newest</option>
@@ -238,13 +241,15 @@ return(
 
     <select value={statusFilter} onChange={(event)=> setStatusFilter(event.target.value)}>
         <option value="all">All Statuses</option>
-
+    
         {statuses.map((status)=>(
             <option key={status} value={status}>
                 {status}
             </option>
         ))}
     </select>
+    </div>
+    </div>
 <div className="applications-container">
     {sortedApplications.map((application)=>
         <div className="application-card" key={application.id}>
@@ -401,7 +406,6 @@ return(
     <button type="submit" disabled={createloading}>{createloading?"Adding...":"Add Application"}</button>
 </form>
 
-<button onClick={handleLogout}>Logout</button>
     </>
 );
 }
