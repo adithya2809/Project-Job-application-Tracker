@@ -465,16 +465,52 @@ return(
             </div>
             
             <div className="application-details">
-            <p><strong>{application.location}</strong></p>
-            <p><strong>{application.job_type}</strong></p>
-            <p><strong>{application.application_date}</strong></p>
-            <p><strong>{application.job_url}</strong></p>
-            <p><strong>{application.salary}</strong></p>
-            <p><strong>{application.notes}</strong></p>
-                </div>
+            <div>
+        <span>Location</span>
+        <p>{application.location}</p>
+    </div>
+
+    <div>
+        <span>Job Type</span>
+        <p>{application.job_type}</p>
+    </div>
+
+    <div>
+        <span>Applied On</span>
+        <p>{application.application_date}</p>
+    </div>
+
+    <div>
+        <span>Salary</span>
+        <p>{application.salary || "Not specified"}</p>
+    </div>
+
+    <div>
+    <span>Job URL</span>
+
+    {application.job_url ? (
+        <a
+            href={application.job_url}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            View Job
+        </a>
+    ) : (
+        <p>Not provided</p>
+    )}
+</div>
+
+    <div>
+        <span>Notes</span>
+        <p>{application.notes || "No notes"}</p>
+    </div>
+
+</div>
+                
             <div className="application-actions">
-            <button onClick={()=>{handleEdit(application)}}>Edit</button>
-            <button onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting...":"Delete"}</button>
+            <button className="edit-button" onClick={()=>{handleEdit(application)}}>Edit</button>
+            <button className="delete-button" onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting...":"Delete"}</button>
             </div>
             
             </>

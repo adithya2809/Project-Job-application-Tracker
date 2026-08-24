@@ -296,14 +296,50 @@ body{
     font-weight: 600;
 }
 .status{
-  padding: 5px 10px;
-  border-radius: 15 px;
-  background: #eee;
+  display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid #e2e8f0;
+    white-space: nowrap;
 }
 
+.application-details {
+  display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.application-details div{
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.application-details span{
+  min-width: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color:#64748b;
+}
 .application-details p {
-    margin: 8px 0;
-    color: #64748b;
+    margin: 0;
+    color: #334155;
+    overflow-wrap: anywhere;
+}
+
+.application-details a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.application-details a:hover {
+    text-decoration: underline;
 }
 
 .application-actions {
@@ -317,9 +353,41 @@ body{
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+}
+
+.edit-button{
+  background-color: white;
+  color: rgb(78, 102, 149);
+}
+
+.delete-button{
+  background-color: white;
+  color: red;
 }
 
 .application-actions button:hover{
   opacity: 0.85;
+}
+
+.delete-button:hover{
+  border: white;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(255, 0, 0);
+}
+
+.edit-button:hover{
+  background-color:rgb(78, 102, 149) ;
+  color: white;
+}
+
+.application-notes {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.application-notes span {
+    display: block;
+    margin-bottom: 5px;
 }
