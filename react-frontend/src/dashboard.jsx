@@ -265,7 +265,7 @@ async function handleCreateSubmit(event) {
    
 
 return(
-    <>
+    <div className="dashboard">
     <header className="navbar">
     <h1>Job Tracker</h1>
 
@@ -455,7 +455,7 @@ return(
             </>
             ):(
             <>
-            <div className="application-header">
+            <div className="application-header" >
                 <div>
             <h2>{application.company}</h2>
             <h3>{application.role}</h3>
@@ -483,7 +483,7 @@ return(
 )} 
 </div>
 
-    </>
+    </div>
 );
 }
 export default Dashboard;
