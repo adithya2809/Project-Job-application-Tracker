@@ -45,6 +45,9 @@ const [sortOrder,setSortOrder]=useState("newest");
 const [statusFilter,setStatusFilter]=useState("all");
 
 const [showCreateForm,setShowCreateForm]=useState(false);
+
+const [formError,setFormError]=useState({});
+
 useEffect(()=>{
     async function getApplications(){
         try{
@@ -104,6 +107,11 @@ useEffect(()=>{
             [name]:value
         }
         );
+        setFormError((currentErrors) => {
+        const newErrors = { ...currentErrors };
+        delete newErrors[name];
+        return newErrors;
+    });
     }
     function handleEdit(application){
         setEditFormData({
@@ -153,11 +161,39 @@ function handleCreateChange(event){
         ...formData,
         [name]:value
 });
+    setFormError((currentErrors) => {
+        const newErrors = { ...currentErrors };
+        delete newErrors[name];
+        return newErrors;
+    });
 }
+function validateForm(){
+    console.log("Validating",formData);
+    const errors={};
+    if(!formData.company.trim()){
+        errors.company="Company is Required";
+    }
+
+    if(!formData.role.trim()){
+        errors.role="Role is Required";
+    }
+
+    if(!formData.status.trim()){
+        errors.status="Status is Required";
+    }
+    setFormError(errors);
+    return Object.keys(errors).length===0;
+   }
 
 async function handleCreateSubmit(event) {
     event.preventDefault();
+
+    if(!validateForm()){
+        return;
+    }
+    
     setCreateLoading(true);
+
     try{
     const token = localStorage.getItem("token");
     const response=await fetch("http://localhost:8000/applications",{
@@ -186,7 +222,9 @@ async function handleCreateSubmit(event) {
         });
     }
     else{
-        setError(data.detail)
+        setError(Array.isArray(data.detail)
+            ? data.detail.map((err) => err.msg).join(", ")
+            : data.detail)
     }
     }
     catch(error){
@@ -223,6 +261,9 @@ async function handleCreateSubmit(event) {
    function handleCreate(){
     setShowCreateForm(true);
    }
+
+   
+
 return(
     <>
     <header className="navbar">
@@ -243,6 +284,9 @@ return(
     value={formData.company} 
     onChange={handleCreateChange}/>
 
+    {formError.company&& (
+        <p>Company is Required</p>
+    )}
      <input
         type="text"
         name="role"
@@ -250,7 +294,9 @@ return(
         value={formData.role}
         onChange={handleCreateChange}
     />
-
+    {formError.role&&(
+        <p>Role is Required</p>
+    )}
     <input
         type="text"
         name="location"
@@ -274,7 +320,9 @@ return(
     value={formData.status}
     onChange={handleCreateChange}
 />
-
+{formError.status&&(
+    <p>Status is Required</p>
+)}
 <input
     type="date"
     name="application_date"
@@ -325,7 +373,6 @@ return(
 
     <select value={statusFilter} onChange={(event)=> setStatusFilter(event.target.value)}>
         <option value="all">All Statuses</option>
-    
         {statuses.map((status)=>(
             <option key={status} value={status}>
                 {status}
@@ -334,7 +381,21 @@ return(
     </select>
     </div>
 
+    {sortedApplications.length===0 && (
+        <div className="empty-state">
+            <h2>No Applications Found</h2>
+            <p>
+                {applications.length===0?
+                    "You haven't added Applications Yet":
+                    "Try Changing Your Search or Filters"
+                }
+            </p>
+        </div>
+    )}
+
+
 <div className="applications-container">
+
     {sortedApplications.map((application)=>
         <div className="application-card" key={application.id}>
             
@@ -421,8 +482,6 @@ return(
     </div>
 )} 
 </div>
- 
-
 
     </>
 );
