@@ -26,7 +26,6 @@ function Login(){
 
     async function handleSubmit(event){
         event.preventDefault();
-        setMessage("");
         setLoginError("");
         setLoginLoading(true);
 
@@ -58,18 +57,27 @@ function Login(){
     }
 
 return (
-    <>
-    <h1>Login Page</h1>
+    
+    <div className="login-page">
+        <div className="login-card">
+    <h1>Job Tracker</h1>
+    <p className="login-subtitle">Login to your account</p>
     <form onSubmit={handleSubmit}>
-    <input type="text" name="user_name" value={formData.user_name}
+    <input className="username_input" type="text" name="user_name" value={formData.user_name} placeholder="username"
         onChange={handleChange}/>
-    <input type="email" name="email" value={formData.email}
+        <p className="or-b/w-username and email">OR</p>
+    <input type="email" placeholder="email" name="email" value={formData.email}
         onChange={handleChange}/>
-    <input type="password" name="password" value={formData.password}
+    <input type="password" name="password"  placeholder="password" value={formData.password}
         onChange={handleChange}/>
+
+        {loginError&&(
+            <p className="login-error">{loginError}</p>
+        )}
     <button type="submit" disabled={loginLoading}>{loginLoading?"logging in...":"Login"}</button>
     </form>
-    </>
+    </div>
+    </div>
 )
 }
 export default Login;
