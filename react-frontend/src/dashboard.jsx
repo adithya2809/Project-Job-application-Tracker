@@ -1,7 +1,5 @@
 import { useState,useEffect } from "react";
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+
 import './App.css'
 
 function Dashboard(){
@@ -12,7 +10,7 @@ const [error,setError]=useState("");
 const [editingId,setEditingId]=useState(null);
 const [saveLoading,setSaveLoading]=useState(false);
 const [createloading,setCreateLoading]=useState(false);
-const [deleteLoading,setDeleteLoading]=useState(false);
+const [deleteLoading,setDeleteLoading]=useState(null);
 
 const [editFormData,setEditFormData]=useState({
     company: "",
@@ -62,7 +60,6 @@ useEffect(()=>{
             }
             const data=await response.json();
             setApplications(data);
-            console.log(data);
         }
         catch (error){
             setError("Unable to load applications");
@@ -76,7 +73,7 @@ useEffect(()=>{
 
 
     async function handleDelete(id){
-        setDeleteLoading(true);
+        setDeleteLoading(id);
         try{
             const token=localStorage.getItem("token");
             const response=await fetch(`http://localhost:8000/applications/${id}`,{
@@ -87,14 +84,18 @@ useEffect(()=>{
             if (!response.ok){
                 throw new Error("Failed to Delete Application!")
             }
-            setApplications(applications.filter((application)=>application.id!==id));
-        }
+            setError("");
+            setApplications((currentApplications) =>
+        currentApplications.filter(
+        (application) => application.id !== id
+        )
+        );        }
     
         catch (error){
             setError("Failed to delete the Application");
         }
         finally{
-            setDeleteLoading(false);
+            setDeleteLoading(null);
         }
 
         
@@ -142,9 +143,15 @@ async function handleSave(id){
     if(!response.ok){
         throw new Error("Failed to update application")
     }
+    setError("")
     const updatedApplication=await response.json();
-    setApplications(applications.map((application)=>application.id===id?updatedApplication:application
-    ));
+    setApplications((currentApplications) =>
+    currentApplications.map((application) =>
+        application.id === id
+            ? updatedApplication
+            : application
+    )
+);
     setEditingId(null)
         }
     catch(error){
@@ -168,7 +175,6 @@ function handleCreateChange(event){
     });
 }
 function validateForm(){
-    console.log("Validating",formData);
     const errors={};
     if(!formData.company.trim()){
         errors.company="Company is Required";
@@ -206,8 +212,12 @@ async function handleCreateSubmit(event) {
     const data =await response.json();
 
     if (response.ok){
-        setApplications([...applications,data]);
-        setShowCreateForm(false);
+        setError("");
+    setApplications((currentApplications) => [
+    ...currentApplications,
+    data
+    ]);        
+    setShowCreateForm(false);
 
         setFormData({
             company: "",
@@ -510,7 +520,7 @@ return(
                 
             <div className="application-actions">
             <button className="edit-button" onClick={()=>{handleEdit(application)}}>Edit</button>
-            <button className="delete-button" onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading}>{deleteLoading?"Deleting...":"Delete"}</button>
+            <button className="delete-button" onClick={()=>{handleDelete(application.id)}} disabled={deleteLoading===application.id}>{deleteLoading===application.id?"Deleting...":"Delete"}</button>
             </div>
             
             </>
