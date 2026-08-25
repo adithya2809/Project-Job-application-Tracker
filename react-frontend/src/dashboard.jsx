@@ -108,6 +108,7 @@ useEffect(()=>{
             [name]:value
         }
         );
+        
         setFormError((currentErrors) => {
         const newErrors = { ...currentErrors };
         delete newErrors[name];

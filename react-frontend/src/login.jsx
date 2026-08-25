@@ -1,7 +1,5 @@
 import { useState } from "react";
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+
 import './App.css'
 
 import {useNavigate} from "react-router-dom";
@@ -12,7 +10,6 @@ function Login(){
         "email":"",
         "password":""
     });
-    const [message,setMessage]=useState("");
     const [loginError,setLoginError]=useState("");
     const [loginLoading,setLoginLoading]=useState(false);
 
@@ -23,7 +20,8 @@ function Login(){
         setFormData({
             ...formData,
             [name]:value
-        })
+        });
+        setLoginError("");
     }
 
     async function handleSubmit(event){
@@ -44,7 +42,6 @@ function Login(){
             const data=await response.json();
             if (response.ok){
                 localStorage.setItem("token",data.access_token);
-                setMessage("Login Successful")
                 navigate("/dashboard")
             }
             else{

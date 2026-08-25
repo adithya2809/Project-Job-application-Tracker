@@ -5,7 +5,6 @@ function ProtectedRoute({children}){
 
     if(!token){
         return <Navigate to="/" replace/>
-        console.log("ProtectedRoute token:",token);
     }
 
     return children
