@@ -72,23 +72,46 @@ body{
   padding:20px 40px;
   background: white;
   border-bottom: 1px solid #e5e7eb;
+  
 }
 
 .navbar h1{
   margin:0;
   font-size: 24px;
+  color: #1e293b;
 }
 
 .navbar div{
   display: flex;
-  gap: 10px;
+  gap: 50px;
 }
 
 .navbar button{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 9px 16px;
   border: none;
   border-radius: 6px;
   cursor:pointer;
+  background-color: black;
+  color: white;
+}
+
+.navbar button img{
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.navbar .logout-button{
+  color: #dc2626;
+}
+
+.navbar .logout-button:hover{
+  background-color: #b91c1c;
+  color: black;
+  box-shadow: 5px rgb(174, 45, 45);
 }
 
 .dashboard-controls{
@@ -96,6 +119,7 @@ body{
   gap: 12px;
   padding: 25px 40px;
   flex-wrap: wrap;  
+  background-color: white;
 }
 
 .dashboard-controls input,
@@ -104,6 +128,8 @@ body{
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
+    background-color: rgb(192, 185, 185);
+    color: black;
 }
 
 .dashboard-controls input {

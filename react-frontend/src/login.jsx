@@ -60,7 +60,7 @@ return (
     
     <div className="login-page">
         <div className="login-card">
-    <h1>Job Tracker</h1>
+    <h1>Career Pilot</h1>
     <p className="login-subtitle">Login to your account</p>
     <form onSubmit={handleSubmit}>
     <input className="username_input" type="text" name="user_name" value={formData.user_name} placeholder="username"

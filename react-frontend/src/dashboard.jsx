@@ -1,6 +1,7 @@
 import { useState,useEffect } from "react";
 
 import './App.css'
+import logoutIcon from './assets/icons8-logout-50.png';
 
 function Dashboard(){
 const [applications,setApplications]=useState([]);
@@ -278,11 +279,14 @@ async function handleCreateSubmit(event) {
 return(
     <div className="dashboard">
     <header className="navbar">
-    <h1>Job Tracker</h1>
-
-    <button onClick={handleCreate}>Create New</button>
-    <button onClick={handleLogout}>Logout</button>
-
+    <h1>Career Pilot</h1>
+    <div className="navbar-buttons">
+    <button className="create-new-button" onClick={handleCreate}>Create New</button>
+    <button className="logout-button" onClick={handleLogout}>
+        <img src={logoutIcon} alt="" aria-hidden="true" />
+        Logout
+    </button>
+    </div>
     </header>
 
     {showCreateForm && (
