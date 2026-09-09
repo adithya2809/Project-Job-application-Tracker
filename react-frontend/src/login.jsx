@@ -11,6 +11,7 @@ function Login(){
         "password":""
     });
     const [loginError,setLoginError]=useState("");
+    const [registerError,setRegisterError]=useState("");
     const [loginLoading,setLoginLoading]=useState(false);
 
     
@@ -55,7 +56,9 @@ function Login(){
             setLoginLoading(false)
         }
     }
-
+    async function navigateRegister(){
+        await navigate("/register")
+    }
 return (
     
     <div className="login-page">
@@ -71,6 +74,7 @@ return (
     <input type="password" name="password"  placeholder="password" value={formData.password}
         onChange={handleChange}/>
 
+    <p className="register">New User?<button onClick={navigateRegister}>Register</button></p>
         {loginError&&(
             <p className="login-error">{loginError}</p>
         )}
