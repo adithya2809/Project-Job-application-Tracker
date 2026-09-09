@@ -66,13 +66,22 @@ return (
     <h1>Career Pilot</h1>
     <p className="login-subtitle">Login to your account</p>
     <form onSubmit={handleSubmit}>
-    <input className="username_input" type="text" name="user_name" value={formData.user_name} placeholder="username"
-        onChange={handleChange}/>
+    <div className="floating-field">
+        <input id="login-user-name" className="username_input" type="text" name="user_name" value={formData.user_name} placeholder=" "
+            onChange={handleChange}/>
+        <label htmlFor="login-user-name">Username</label>
+    </div>
         <p className="or-b/w-username and email">OR</p>
-    <input type="email" placeholder="email" name="email" value={formData.email}
-        onChange={handleChange}/>
-    <input type="password" name="password"  placeholder="password" value={formData.password}
-        onChange={handleChange}/>
+    <div className="floating-field">
+        <input id="login-email" type="email" placeholder=" " name="email" value={formData.email}
+            onChange={handleChange}/>
+        <label htmlFor="login-email">Email</label>
+    </div>
+    <div className="floating-field">
+        <input id="login-password" type="password" name="password" placeholder=" " value={formData.password}
+            onChange={handleChange}/>
+        <label htmlFor="login-password">Password</label>
+    </div>
 
     <p className="register-line">New User? <a href="/register">register</a></p>
         {loginError&&(

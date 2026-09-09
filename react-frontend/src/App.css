@@ -327,21 +327,44 @@ body{
     gap: 14px;
 }
 
+.floating-field {
+  position: relative;
+}
+
 .login-card input {
     box-sizing: border-box;
     width: 100%;
-    padding: 11px 12px;
+  padding: 16px 12px 7px;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     font-size: 14px;
     background-color: white;
+  color: #111827;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.floating-field label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #64748b;
+  font-size: 14px;
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 150ms ease, color 150ms ease;
 }
 
 .login-card input:focus {
     outline: none;
     border-color: #2563eb;
     background-color: white;
-    color: black;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.floating-field input:focus + label,
+.floating-field input:not(:placeholder-shown) + label {
+  color: #2563eb;
+  transform: translateY(-9px) scale(0.78);
 }
 
 .login-card button {

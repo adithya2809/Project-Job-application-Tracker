@@ -66,12 +66,21 @@ return(
     <h1>Career Pilot</h1>
     <p className="login-subtitle">Register your account</p>
     <form onSubmit={handleRegister}>
-    <input className="username_input" type="text" name="user_name" value={formData.user_name} placeholder="username"
-        onChange={handleChange}/>
-    <input type="email" placeholder="email" name="email" value={formData.email}
-        onChange={handleChange}/>
-    <input type="password" name="password"  placeholder="password" value={formData.password}
-        onChange={handleChange}/>
+    <div className="floating-field">
+        <input id="register-user-name" className="username_input" type="text" name="user_name" value={formData.user_name} placeholder=" "
+            onChange={handleChange}/>
+        <label htmlFor="register-user-name">Username</label>
+    </div>
+    <div className="floating-field">
+        <input id="register-email" type="email" placeholder=" " name="email" value={formData.email}
+            onChange={handleChange}/>
+        <label htmlFor="register-email">Email</label>
+    </div>
+    <div className="floating-field">
+        <input id="register-password" type="password" name="password" placeholder=" " value={formData.password}
+            onChange={handleChange}/>
+        <label htmlFor="register-password">Password</label>
+    </div>
         <button type="submit" disabled={loading}>{loading?"Registering...":"Register"}</button>
         {registered && <p>Registeration Succussful</p> && <button onClick={navgateLogin}>Login to your account</button>
         }
