@@ -74,7 +74,7 @@ return (
     <input type="password" name="password"  placeholder="password" value={formData.password}
         onChange={handleChange}/>
 
-    <p className="register">New User?<button onClick={navigateRegister}>Register</button></p>
+    <p className="register-line">New User? <a href="/register">register</a></p>
         {loginError&&(
             <p className="login-error">{loginError}</p>
         )}

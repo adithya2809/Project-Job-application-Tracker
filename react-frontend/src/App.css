@@ -368,3 +368,16 @@ body{
     color: #dc2626;
     font-size: 14px;
 }
+
+.register-line{
+    font-size: smaller ;
+    color: black;
+}
+.register-line a{
+    text-decoration: none;
+    font-size: medium;
+    color:#1e293b
+}
+.register-line a:hover{
+    text-decoration: underline rgb(68, 68, 100);
+}

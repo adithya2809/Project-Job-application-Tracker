@@ -57,7 +57,7 @@ function Register(){
         }
     }
     async function navgateLogin() {
-        await navigate("/login")
+        await navigate("/")
     }
 return(
     <>
