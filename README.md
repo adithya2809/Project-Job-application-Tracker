@@ -33,7 +33,6 @@ bash
 cd app
 pip install -r requirements.txt
 uvicorn main:app --reload
-Runs on http://localhost:8000. Requires a PostgreSQL database at postgresql+psycopg://postgres:159369@localhost:5432/Job_tracker.
 
 Frontend setup:
 
