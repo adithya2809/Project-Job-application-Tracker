@@ -1,0 +1,7 @@
+# Python environment and local secrets
+.venv/
+.env
+
+# Alembic migrations and configuration
+alembic/
+alembic.ini
